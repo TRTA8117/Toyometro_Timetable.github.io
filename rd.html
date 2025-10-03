@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta http-equiv="content-type" charset="UTF-8">
+		<script>
+			let linkList = 
+			[
+				["STTS_0", "StaTTSel_0.html?sel=0"],
+				["STTS_1", "StaTTSel_0.html?sel=1"],
+				["STTS_10", "StaTTSel_0.html?sel=10"],
+				["STTS_11", "StaTTSel_0.html?sel=11"],
+				["STTS_12", "StaTTSel_0.html?sel=12"],
+				["STTS_13", "StaTTSel_0.html?sel=13"],
+				["STTS_14", "StaTTSel_0.html?sel=14"],
+				["STTS_15", "StaTTSel_0.html?sel=15"],
+				["STTS_2", "StaTTSel_0.html?sel=2"],
+				["STTS_3", "StaTTSel_0.html?sel=3"],
+				["STTS_4", "StaTTSel_0.html?sel=4"],
+				["STT_9_0_down", "StationTT_9_down_0.html?sel=0"],
+				["STT_9_0_up", "StationTT_9_up_0.html?sel=0"],
+				["STT_9_10_down", "StationTT_9_down_0.html?sel=10"],
+				["STT_9_10_up", "StationTT_9_up_0.html?sel=10"],
+				["STT_9_11_down", "StationTT_9_down_0.html?sel=11"],
+				["STT_9_11_up", "StationTT_9_up_0.html?sel=11"],
+				["STT_9_12_down", "StationTT_9_down_0.html?sel=12"],
+				["STT_9_12_up", "StationTT_9_up_0.html?sel=12"],
+				["STT_9_13_down", "StationTT_9_down_0.html?sel=13"],
+				["STT_9_13_up", "StationTT_9_up_0.html?sel=13"],
+				["STT_9_14_down", "StationTT_9_down_0.html?sel=14"],
+				["STT_9_14_up", "StationTT_9_up_0.html?sel=14"],
+				["STT_9_15_down", "StationTT_9_down_0.html?sel=15"],
+				["STT_9_15_up", "StationTT_9_up_0.html?sel=15"],
+				["STT_9_1_down", "StationTT_9_down_0.html?sel=1"],
+				["STT_9_1_up", "StationTT_9_up_0.html?sel=1"],
+				["STT_9_2_down", "StationTT_9_down_0.html?sel=2"],
+				["STT_9_2_up", "StationTT_9_up_0.html?sel=2"],
+				["STT_9_3_down", "StationTT_9_down_0.html?sel=3"],
+				["STT_9_3_up", "StationTT_9_up_0.html?sel=3"],
+				["STT_9_4_down", "StationTT_9_down_0.html?sel=4"],
+				["STT_9_4_up", "StationTT_9_up_0.html?sel=4"],
+				["STT_9_5_down", "StationTT_9_down_0.html?sel=5"],
+				["STT_9_5_up", "StationTT_9_up_0.html?sel=5"],
+				["STT_9_6_down", "StationTT_9_down_0.html?sel=6"],
+				["STT_9_6_up", "StationTT_9_up_0.html?sel=6"],
+				["STT_9_7_down", "StationTT_9_down_0.html?sel=7"],
+				["STT_9_7_up", "StationTT_9_up_0.html?sel=7"],
+				["STT_9_8_down", "StationTT_9_down_0.html?sel=8"],
+				["STT_9_8_up", "StationTT_9_up_0.html?sel=8"],
+				["STT_9_9_down", "StationTT_9_down_0.html?sel=9"],
+				["STT_9_9_up", "StationTT_9_up_0.html?sel=9"],
+				["TTT_9_0", "TrainTT_9_0.html?sel=0"],
+				["TTT_9_1", "TrainTT_9_0.html?sel=1"],
+				["TTT_9_10", "TrainTT_9_0.html?sel=10"],
+				["TTT_9_11", "TrainTT_9_0.html?sel=11"],
+				["TTT_9_12", "TrainTT_9_0.html?sel=12"],
+				["TTT_9_13", "TrainTT_9_0.html?sel=13"],
+				["TTT_9_14", "TrainTT_9_0.html?sel=14"],
+				["TTT_9_15", "TrainTT_9_0.html?sel=15"],
+				["TTT_9_16", "TrainTT_9_0.html?sel=16"],
+				["TTT_9_17", "TrainTT_9_0.html?sel=17"],
+				["TTT_9_18", "TrainTT_9_0.html?sel=18"],
+				["TTT_9_19", "TrainTT_9_0.html?sel=19"],
+				["TTT_9_2", "TrainTT_9_0.html?sel=2"],
+				["TTT_9_20", "TrainTT_9_0.html?sel=20"],
+				["TTT_9_21", "TrainTT_9_0.html?sel=21"],
+				["TTT_9_22", "TrainTT_9_0.html?sel=22"],
+				["TTT_9_23", "TrainTT_9_0.html?sel=23"],
+				["TTT_9_24", "TrainTT_9_0.html?sel=24"],
+				["TTT_9_25", "TrainTT_9_0.html?sel=25"],
+				["TTT_9_26", "TrainTT_9_0.html?sel=26"],
+				["TTT_9_27", "TrainTT_9_0.html?sel=27"],
+				["TTT_9_28", "TrainTT_9_0.html?sel=28"],
+				["TTT_9_29", "TrainTT_9_0.html?sel=29"],
+				["TTT_9_3", "TrainTT_9_0.html?sel=3"],
+				["TTT_9_30", "TrainTT_9_0.html?sel=30"],
+				["TTT_9_31", "TrainTT_9_0.html?sel=31"],
+				["TTT_9_32", "TrainTT_9_0.html?sel=32"],
+				["TTT_9_33", "TrainTT_9_0.html?sel=33"],
+				["TTT_9_4", "TrainTT_9_0.html?sel=4"],
+				["TTT_9_5", "TrainTT_9_0.html?sel=5"],
+				["TTT_9_6", "TrainTT_9_0.html?sel=6"],
+				["TTT_9_7", "TrainTT_9_0.html?sel=7"],
+				["TTT_9_8", "TrainTT_9_0.html?sel=8"],
+				["TTT_9_9", "TrainTT_9_0.html?sel=9"],
+				["", ""]
+			];
+			function jump()
+			{
+				// URLのパラメータを取得
+				const urlParams = new URLSearchParams(window.location.search);
+				let select = urlParams.get("sel");
+				const dia = urlParams.get("dia");
+				
+				let isReqAddDiaParam = false;
+
+				if(dia != null)
+				{
+					// diaパラメータがある場合
+					if(select.includes("STT_"))
+					{
+						// 駅時刻へのリダイレクトなら、selパラメータのダイヤ番号を設定
+						select = select.replace("dia", dia);
+					}
+					else
+					{
+						// それ以外ならフラグを立てておく
+						isReqAddDiaParam = true;
+					}
+				}
+
+				// リダイレクト先取得
+				let link = "";
+				for (let i = 0; i < linkList.length; i++) 
+				{
+					if(linkList[i][0] == select)
+					{
+						link = linkList[i][1];
+						break;
+					}	
+				}
+
+				if(link == "")
+				{
+					alert("リダイレクトエラー");
+					return;
+				}
+
+				if(isReqAddDiaParam)
+				{
+					// 既存のURLを取得
+					const url = new URL(link, window.location.origin);
+
+					// パラメータを追加
+					url.searchParams.append("dia", dia);
+
+					// 更新したURLをリンクに設定
+					link = url.pathname.substring(1) + url.search;
+				}
+
+				// 表示
+				window.location.replace(link);
+			}
+		</script>
+	</head>
+	<body onload='jump()'>
+	<br>この時刻表はOuOrario V001.002を使用して生成しています。<a href="https://surugaexpress.web.fc2.com/X7_freeSoft/ouorario/ouorario.html">詳細</a></body>
+</html>
