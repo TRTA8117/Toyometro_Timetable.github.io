@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta http-equiv="content-type" charset="UTF-8">
+		<script>
+			let linkList = 
+			[
+				["STTS_0", "StaTTSel_0.html?sel=0"],
+				["STTS_1", "StaTTSel_0.html?sel=1"],
+				["STTS_2", "StaTTSel_0.html?sel=2"],
+				["STTS_3", "StaTTSel_0.html?sel=3"],
+				["STTS_4", "StaTTSel_0.html?sel=4"],
+				["STT_15_0_down", "StationTT_15_down_0.html?sel=0"],
+				["STT_15_0_up", "StationTT_15_up_0.html?sel=0"],
+				["STT_15_10_down", "StationTT_15_down_0.html?sel=10"],
+				["STT_15_10_up", "StationTT_15_up_0.html?sel=10"],
+				["STT_15_11_down", "StationTT_15_down_0.html?sel=11"],
+				["STT_15_11_up", "StationTT_15_up_0.html?sel=11"],
+				["STT_15_12_down", "StationTT_15_down_0.html?sel=12"],
+				["STT_15_12_up", "StationTT_15_up_0.html?sel=12"],
+				["STT_15_13_down", "StationTT_15_down_0.html?sel=13"],
+				["STT_15_13_up", "StationTT_15_up_0.html?sel=13"],
+				["STT_15_14_down", "StationTT_15_down_0.html?sel=14"],
+				["STT_15_14_up", "StationTT_15_up_0.html?sel=14"],
+				["STT_15_15_down", "StationTT_15_down_0.html?sel=15"],
+				["STT_15_15_up", "StationTT_15_up_0.html?sel=15"],
+				["STT_15_1_down", "StationTT_15_down_0.html?sel=1"],
+				["STT_15_1_up", "StationTT_15_up_0.html?sel=1"],
+				["STT_15_2_down", "StationTT_15_down_0.html?sel=2"],
+				["STT_15_2_up", "StationTT_15_up_0.html?sel=2"],
+				["STT_15_3_down", "StationTT_15_down_0.html?sel=3"],
+				["STT_15_3_up", "StationTT_15_up_0.html?sel=3"],
+				["STT_15_4_down", "StationTT_15_down_0.html?sel=4"],
+				["STT_15_4_up", "StationTT_15_up_0.html?sel=4"],
+				["STT_15_5_down", "StationTT_15_down_0.html?sel=5"],
+				["STT_15_5_up", "StationTT_15_up_0.html?sel=5"],
+				["STT_15_6_down", "StationTT_15_down_0.html?sel=6"],
+				["STT_15_6_up", "StationTT_15_up_0.html?sel=6"],
+				["STT_15_7_down", "StationTT_15_down_0.html?sel=7"],
+				["STT_15_7_up", "StationTT_15_up_0.html?sel=7"],
+				["STT_15_8_down", "StationTT_15_down_0.html?sel=8"],
+				["STT_15_8_up", "StationTT_15_up_0.html?sel=8"],
+				["STT_15_9_down", "StationTT_15_down_0.html?sel=9"],
+				["STT_15_9_up", "StationTT_15_up_0.html?sel=9"],
+				["STT_5_0_down", "StationTT_5_down_0.html?sel=0"],
+				["STT_5_0_up", "StationTT_5_up_0.html?sel=0"],
+				["STT_5_10_down", "StationTT_5_down_0.html?sel=10"],
+				["STT_5_10_up", "StationTT_5_up_0.html?sel=10"],
+				["STT_5_11_down", "StationTT_5_down_0.html?sel=11"],
+				["STT_5_11_up", "StationTT_5_up_0.html?sel=11"],
+				["STT_5_12_down", "StationTT_5_down_0.html?sel=12"],
+				["STT_5_12_up", "StationTT_5_up_0.html?sel=12"],
+				["STT_5_13_down", "StationTT_5_down_0.html?sel=13"],
+				["STT_5_13_up", "StationTT_5_up_0.html?sel=13"],
+				["STT_5_14_down", "StationTT_5_down_0.html?sel=14"],
+				["STT_5_14_up", "StationTT_5_up_0.html?sel=14"],
+				["STT_5_15_down", "StationTT_5_down_0.html?sel=15"],
+				["STT_5_15_up", "StationTT_5_up_0.html?sel=15"],
+				["STT_5_1_down", "StationTT_5_down_0.html?sel=1"],
+				["STT_5_1_up", "StationTT_5_up_0.html?sel=1"],
+				["STT_5_2_down", "StationTT_5_down_0.html?sel=2"],
+				["STT_5_2_up", "StationTT_5_up_0.html?sel=2"],
+				["STT_5_3_down", "StationTT_5_down_0.html?sel=3"],
+				["STT_5_3_up", "StationTT_5_up_0.html?sel=3"],
+				["STT_5_4_down", "StationTT_5_down_0.html?sel=4"],
+				["STT_5_4_up", "StationTT_5_up_0.html?sel=4"],
+				["STT_5_5_down", "StationTT_5_down_0.html?sel=5"],
+				["STT_5_5_up", "StationTT_5_up_0.html?sel=5"],
+				["STT_5_6_down", "StationTT_5_down_0.html?sel=6"],
+				["STT_5_6_up", "StationTT_5_up_0.html?sel=6"],
+				["STT_5_7_down", "StationTT_5_down_0.html?sel=7"],
+				["STT_5_7_up", "StationTT_5_up_0.html?sel=7"],
+				["STT_5_8_down", "StationTT_5_down_0.html?sel=8"],
+				["STT_5_8_up", "StationTT_5_up_0.html?sel=8"],
+				["STT_5_9_down", "StationTT_5_down_0.html?sel=9"],
+				["STT_5_9_up", "StationTT_5_up_0.html?sel=9"],
+				["STT_6_0_down", "StationTT_6_down_0.html?sel=0"],
+				["STT_6_0_up", "StationTT_6_up_0.html?sel=0"],
+				["STT_6_10_down", "StationTT_6_down_0.html?sel=10"],
+				["STT_6_10_up", "StationTT_6_up_0.html?sel=10"],
+				["STT_6_11_down", "StationTT_6_down_0.html?sel=11"],
+				["STT_6_11_up", "StationTT_6_up_0.html?sel=11"],
+				["STT_6_12_down", "StationTT_6_down_0.html?sel=12"],
+				["STT_6_12_up", "StationTT_6_up_0.html?sel=12"],
+				["STT_6_13_down", "StationTT_6_down_0.html?sel=13"],
+				["STT_6_13_up", "StationTT_6_up_0.html?sel=13"],
+				["STT_6_14_down", "StationTT_6_down_0.html?sel=14"],
+				["STT_6_14_up", "StationTT_6_up_0.html?sel=14"],
+				["STT_6_15_down", "StationTT_6_down_0.html?sel=15"],
+				["STT_6_15_up", "StationTT_6_up_0.html?sel=15"],
+				["STT_6_1_down", "StationTT_6_down_0.html?sel=1"],
+				["STT_6_1_up", "StationTT_6_up_0.html?sel=1"],
+				["STT_6_2_down", "StationTT_6_down_0.html?sel=2"],
+				["STT_6_2_up", "StationTT_6_up_0.html?sel=2"],
+				["STT_6_3_down", "StationTT_6_down_0.html?sel=3"],
+				["STT_6_3_up", "StationTT_6_up_0.html?sel=3"],
+				["STT_6_4_down", "StationTT_6_down_0.html?sel=4"],
+				["STT_6_4_up", "StationTT_6_up_0.html?sel=4"],
+				["STT_6_5_down", "StationTT_6_down_0.html?sel=5"],
+				["STT_6_5_up", "StationTT_6_up_0.html?sel=5"],
+				["STT_6_6_down", "StationTT_6_down_0.html?sel=6"],
+				["STT_6_6_up", "StationTT_6_up_0.html?sel=6"],
+				["STT_6_7_down", "StationTT_6_down_0.html?sel=7"],
+				["STT_6_7_up", "StationTT_6_up_0.html?sel=7"],
+				["STT_6_8_down", "StationTT_6_down_0.html?sel=8"],
+				["STT_6_8_up", "StationTT_6_up_0.html?sel=8"],
+				["STT_6_9_down", "StationTT_6_down_0.html?sel=9"],
+				["STT_6_9_up", "StationTT_6_up_0.html?sel=9"],
+				["TTT_15_0", "TrainTT_15_0.html?sel=0"],
+				["TTT_15_1", "TrainTT_15_0.html?sel=1"],
+				["TTT_15_10", "TrainTT_15_0.html?sel=10"],
+				["TTT_15_11", "TrainTT_15_0.html?sel=11"],
+				["TTT_15_12", "TrainTT_15_0.html?sel=12"],
+				["TTT_15_13", "TrainTT_15_0.html?sel=13"],
+				["TTT_15_14", "TrainTT_15_0.html?sel=14"],
+				["TTT_15_15", "TrainTT_15_0.html?sel=15"],
+				["TTT_15_16", "TrainTT_15_0.html?sel=16"],
+				["TTT_15_17", "TrainTT_15_0.html?sel=17"],
+				["TTT_15_18", "TrainTT_15_0.html?sel=18"],
+				["TTT_15_19", "TrainTT_15_0.html?sel=19"],
+				["TTT_15_2", "TrainTT_15_0.html?sel=2"],
+				["TTT_15_20", "TrainTT_15_0.html?sel=20"],
+				["TTT_15_21", "TrainTT_15_0.html?sel=21"],
+				["TTT_15_22", "TrainTT_15_0.html?sel=22"],
+				["TTT_15_23", "TrainTT_15_0.html?sel=23"],
+				["TTT_15_24", "TrainTT_15_0.html?sel=24"],
+				["TTT_15_25", "TrainTT_15_0.html?sel=25"],
+				["TTT_15_26", "TrainTT_15_0.html?sel=26"],
+				["TTT_15_27", "TrainTT_15_0.html?sel=27"],
+				["TTT_15_28", "TrainTT_15_0.html?sel=28"],
+				["TTT_15_29", "TrainTT_15_0.html?sel=29"],
+				["TTT_15_3", "TrainTT_15_0.html?sel=3"],
+				["TTT_15_30", "TrainTT_15_0.html?sel=30"],
+				["TTT_15_31", "TrainTT_15_0.html?sel=31"],
+				["TTT_15_32", "TrainTT_15_0.html?sel=32"],
+				["TTT_15_33", "TrainTT_15_0.html?sel=33"],
+				["TTT_15_34", "TrainTT_15_0.html?sel=34"],
+				["TTT_15_35", "TrainTT_15_0.html?sel=35"],
+				["TTT_15_36", "TrainTT_15_0.html?sel=36"],
+				["TTT_15_37", "TrainTT_15_0.html?sel=37"],
+				["TTT_15_38", "TrainTT_15_0.html?sel=38"],
+				["TTT_15_39", "TrainTT_15_0.html?sel=39"],
+				["TTT_15_4", "TrainTT_15_0.html?sel=4"],
+				["TTT_15_40", "TrainTT_15_0.html?sel=40"],
+				["TTT_15_41", "TrainTT_15_0.html?sel=41"],
+				["TTT_15_5", "TrainTT_15_0.html?sel=5"],
+				["TTT_15_6", "TrainTT_15_0.html?sel=6"],
+				["TTT_15_7", "TrainTT_15_0.html?sel=7"],
+				["TTT_15_8", "TrainTT_15_0.html?sel=8"],
+				["TTT_15_9", "TrainTT_15_0.html?sel=9"],
+				["TTT_5_0", "TrainTT_5_0.html?sel=0"],
+				["TTT_5_1", "TrainTT_5_0.html?sel=1"],
+				["TTT_5_10", "TrainTT_5_0.html?sel=10"],
+				["TTT_5_11", "TrainTT_5_0.html?sel=11"],
+				["TTT_5_12", "TrainTT_5_0.html?sel=12"],
+				["TTT_5_13", "TrainTT_5_0.html?sel=13"],
+				["TTT_5_14", "TrainTT_5_0.html?sel=14"],
+				["TTT_5_15", "TrainTT_5_0.html?sel=15"],
+				["TTT_5_16", "TrainTT_5_0.html?sel=16"],
+				["TTT_5_17", "TrainTT_5_0.html?sel=17"],
+				["TTT_5_18", "TrainTT_5_0.html?sel=18"],
+				["TTT_5_19", "TrainTT_5_0.html?sel=19"],
+				["TTT_5_2", "TrainTT_5_0.html?sel=2"],
+				["TTT_5_20", "TrainTT_5_0.html?sel=20"],
+				["TTT_5_21", "TrainTT_5_0.html?sel=21"],
+				["TTT_5_22", "TrainTT_5_0.html?sel=22"],
+				["TTT_5_23", "TrainTT_5_0.html?sel=23"],
+				["TTT_5_24", "TrainTT_5_0.html?sel=24"],
+				["TTT_5_25", "TrainTT_5_0.html?sel=25"],
+				["TTT_5_26", "TrainTT_5_0.html?sel=26"],
+				["TTT_5_27", "TrainTT_5_0.html?sel=27"],
+				["TTT_5_28", "TrainTT_5_0.html?sel=28"],
+				["TTT_5_29", "TrainTT_5_0.html?sel=29"],
+				["TTT_5_3", "TrainTT_5_0.html?sel=3"],
+				["TTT_5_30", "TrainTT_5_0.html?sel=30"],
+				["TTT_5_31", "TrainTT_5_0.html?sel=31"],
+				["TTT_5_32", "TrainTT_5_0.html?sel=32"],
+				["TTT_5_33", "TrainTT_5_0.html?sel=33"],
+				["TTT_5_34", "TrainTT_5_0.html?sel=34"],
+				["TTT_5_35", "TrainTT_5_0.html?sel=35"],
+				["TTT_5_36", "TrainTT_5_0.html?sel=36"],
+				["TTT_5_37", "TrainTT_5_0.html?sel=37"],
+				["TTT_5_38", "TrainTT_5_0.html?sel=38"],
+				["TTT_5_4", "TrainTT_5_0.html?sel=4"],
+				["TTT_5_5", "TrainTT_5_0.html?sel=5"],
+				["TTT_5_6", "TrainTT_5_0.html?sel=6"],
+				["TTT_5_7", "TrainTT_5_0.html?sel=7"],
+				["TTT_5_8", "TrainTT_5_0.html?sel=8"],
+				["TTT_5_9", "TrainTT_5_0.html?sel=9"],
+				["TTT_6_0", "TrainTT_6_0.html?sel=0"],
+				["TTT_6_1", "TrainTT_6_0.html?sel=1"],
+				["TTT_6_10", "TrainTT_6_0.html?sel=10"],
+				["TTT_6_11", "TrainTT_6_0.html?sel=11"],
+				["TTT_6_12", "TrainTT_6_0.html?sel=12"],
+				["TTT_6_13", "TrainTT_6_0.html?sel=13"],
+				["TTT_6_14", "TrainTT_6_0.html?sel=14"],
+				["TTT_6_15", "TrainTT_6_0.html?sel=15"],
+				["TTT_6_16", "TrainTT_6_0.html?sel=16"],
+				["TTT_6_17", "TrainTT_6_0.html?sel=17"],
+				["TTT_6_18", "TrainTT_6_0.html?sel=18"],
+				["TTT_6_19", "TrainTT_6_0.html?sel=19"],
+				["TTT_6_2", "TrainTT_6_0.html?sel=2"],
+				["TTT_6_20", "TrainTT_6_0.html?sel=20"],
+				["TTT_6_21", "TrainTT_6_0.html?sel=21"],
+				["TTT_6_22", "TrainTT_6_0.html?sel=22"],
+				["TTT_6_23", "TrainTT_6_0.html?sel=23"],
+				["TTT_6_24", "TrainTT_6_0.html?sel=24"],
+				["TTT_6_25", "TrainTT_6_0.html?sel=25"],
+				["TTT_6_26", "TrainTT_6_0.html?sel=26"],
+				["TTT_6_27", "TrainTT_6_0.html?sel=27"],
+				["TTT_6_28", "TrainTT_6_0.html?sel=28"],
+				["TTT_6_29", "TrainTT_6_0.html?sel=29"],
+				["TTT_6_3", "TrainTT_6_0.html?sel=3"],
+				["TTT_6_30", "TrainTT_6_0.html?sel=30"],
+				["TTT_6_31", "TrainTT_6_0.html?sel=31"],
+				["TTT_6_4", "TrainTT_6_0.html?sel=4"],
+				["TTT_6_5", "TrainTT_6_0.html?sel=5"],
+				["TTT_6_6", "TrainTT_6_0.html?sel=6"],
+				["TTT_6_7", "TrainTT_6_0.html?sel=7"],
+				["TTT_6_8", "TrainTT_6_0.html?sel=8"],
+				["TTT_6_9", "TrainTT_6_0.html?sel=9"],
+				["", ""]
+			];
+			function jump()
+			{
+				// URLのパラメータを取得
+				const urlParams = new URLSearchParams(window.location.search);
+				let select = urlParams.get("sel");
+				const dia = urlParams.get("dia");
+				
+				let isReqAddDiaParam = false;
+
+				if(dia != null)
+				{
+					// diaパラメータがある場合
+					if(select.includes("STT_"))
+					{
+						// 駅時刻へのリダイレクトなら、selパラメータのダイヤ番号を設定
+						select = select.replace("dia", dia);
+					}
+					else
+					{
+						// それ以外ならフラグを立てておく
+						isReqAddDiaParam = true;
+					}
+				}
+
+				// リダイレクト先取得
+				let link = "";
+				for (let i = 0; i < linkList.length; i++) 
+				{
+					if(linkList[i][0] == select)
+					{
+						link = linkList[i][1];
+						break;
+					}	
+				}
+
+				if(link == "")
+				{
+					alert("リダイレクトエラー");
+					return;
+				}
+
+				if(isReqAddDiaParam)
+				{
+					// 既存のURLを取得
+					const url = new URL(link, window.location.origin);
+
+					// パラメータを追加
+					url.searchParams.append("dia", dia);
+
+					// 更新したURLをリンクに設定
+					link = url.pathname.substring(1) + url.search;
+				}
+
+				// 表示
+				window.location.replace(link);
+			}
+		</script>
+	</head>
+	<body onload='jump()'>
+	<br>この時刻表はOuOrario V001.002を使用して生成しています。<a href="https://surugaexpress.web.fc2.com/X7_freeSoft/ouorario/ouorario.html">詳細</a></body>
+</html>
