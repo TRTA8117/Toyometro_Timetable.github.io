@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta http-equiv="content-type" charset="UTF-8">
+		<title>新規路線 駅時刻表選択</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
+		<style>
+			.time_table
+			{  
+				font-family: "Noto Sans JP", sans-serif;  
+  				font-size: 25px;
+				display:none;
+			}
+
+			.station_name
+			{  
+				font-size: 45px; 
+				padding: 0px 7px;
+				height: 80px;
+				font-weight: bold;
+			}
+
+			.table_base
+			{
+				width: 100%; 
+				border-collapse: collapse;
+			}
+
+			.time_index
+			{  
+  				font-size: 20px;
+				width: 600px;
+				height: 50px;
+				font-weight: bold;
+				color: #000000;
+				background-color: #eeeeee;
+				padding: 0px 7px;
+			}
+			.time
+			{  
+				font-size: 30px;
+				height: 70px;
+				width: 120px;
+				padding: 0px 20px;
+				border-bottom: 2px solid #b4b4b4;
+			}
+
+			.TT_menu
+			{
+				position:fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				font-size: 30px;
+				height: 70px;
+				z-index:999;
+				background-color:#ffffff; 
+			}
+
+			.TT_menu_space
+			{
+				height: 70px;
+			}
+
+			.custom-link 
+			{
+            color: #000000;
+            text-decoration: none;
+        	}
+		</style>
+		<link rel="stylesheet" type="text/css" href="common.css">
+		<script>
+
+			function ShowTable()
+			{
+				// URLのクエリパラメータを取得
+				const urlParams = new URLSearchParams(window.location.search);
+
+				// リンクにパラメータ付与
+				const dia = urlParams.get("dia");
+				const links = document.querySelectorAll('a');
+				links.forEach(link => {
+					// 既存のURLを取得
+					const url = new URL(link.href);
+
+					// パラメータを追加
+					url.searchParams.append("dia", dia);
+
+					// 更新したURLをリンクに設定
+					link.href = url.toString();
+				});
+
+				// 引数を取得
+				const select = urlParams.get("sel");
+
+				// 表示
+				document.getElementById(select).style.display="block";
+			}
+		</script>
+	</head>
+	<body onload='ShowTable()'>
+		<div class="TT_menu">
+			<a href="TTIndex.html">駅一覧に戻る</a>
+		</div>
+		<div class="TT_menu_space"></div>
+		<div id="4" class="time_table">
+			<div class="station_name">半蔵門</div>
+			<table class="table_base">
+				<tr>
+					<td class="time_index">
+						新規路線
+					</td>
+				</tr>
+				<tr>
+					<td class="time">
+						<a href="rd.html?sel=STT_dia_4_up">押上・久喜方面</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="5" class="time_table">
+			<div class="station_name">青山一丁目</div>
+			<table class="table_base">
+				<tr>
+					<td class="time_index">
+						新規路線
+					</td>
+				</tr>
+				<tr>
+					<td class="time">
+						<a href="rd.html?sel=STT_dia_5_up">押上・久喜方面</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="6" class="time_table">
+			<div class="station_name">表参道</div>
+			<table class="table_base">
+				<tr>
+					<td class="time_index">
+						新規路線
+					</td>
+				</tr>
+				<tr>
+					<td class="time">
+						<a href="rd.html?sel=STT_dia_6_up">押上・久喜方面</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="7" class="time_table">
+			<div class="station_name">渋谷</div>
+			<table class="table_base">
+				<tr>
+					<td class="time_index">
+						新規路線
+					</td>
+				</tr>
+				<tr>
+					<td class="time">
+						<a href="rd.html?sel=STT_dia_7_up">押上・久喜方面</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="8" class="time_table">
+			<div class="station_name">池尻大橋</div>
+			<table class="table_base">
+				<tr>
+					<td class="time_index">
+						新規路線
+					</td>
+				</tr>
+				<tr>
+					<td class="time">
+						<a href="rd.html?sel=STT_dia_8_up">押上・南栗橋方面</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="9" class="time_table">
+			<div class="station_name">三軒茶屋</div>
+			<table class="table_base">
+				<tr>
+					<td class="time_index">
+						新規路線
+					</td>
+				</tr>
+				<tr>
+					<td class="time">
+						<a href="rd.html?sel=STT_dia_9_up">押上・久喜方面</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="10" class="time_table">
+			<div class="station_name">駒沢大学</div>
+			<table class="table_base">
+				<tr>
+					<td class="time_index">
+						新規路線
+					</td>
+				</tr>
+				<tr>
+					<td class="time">
+						<a href="rd.html?sel=STT_dia_10_up">押上・南栗橋方面</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="11" class="time_table">
+			<div class="station_name">桜新町</div>
+			<table class="table_base">
+				<tr>
+					<td class="time_index">
+						新規路線
+					</td>
+				</tr>
+				<tr>
+					<td class="time">
+						<a href="rd.html?sel=STT_dia_11_up">押上・南栗橋方面</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="12" class="time_table">
+			<div class="station_name">用賀</div>
+			<table class="table_base">
+				<tr>
+					<td class="time_index">
+						新規路線
+					</td>
+				</tr>
+				<tr>
+					<td class="time">
+						<a href="rd.html?sel=STT_dia_12_up">押上・南栗橋方面</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="13" class="time_table">
+			<div class="station_name">二子玉川</div>
+			<table class="table_base">
+				<tr>
+					<td class="time_index">
+						新規路線
+					</td>
+				</tr>
+				<tr>
+					<td class="time">
+						<a href="rd.html?sel=STT_dia_13_up">押上・久喜方面</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="14" class="time_table">
+			<div class="station_name">二子新地</div>
+			<table class="table_base">
+				<tr>
+					<td class="time_index">
+						新規路線
+					</td>
+				</tr>
+				<tr>
+					<td class="time">
+						<a href="rd.html?sel=STT_dia_14_up">大井町・押上方面</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="15" class="time_table">
+			<div class="station_name">高津</div>
+			<table class="table_base">
+				<tr>
+					<td class="time_index">
+						新規路線
+					</td>
+				</tr>
+				<tr>
+					<td class="time">
+						<a href="rd.html?sel=STT_dia_15_up">大井町・押上方面</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="16" class="time_table">
+			<div class="station_name">溝の口</div>
+			<table class="table_base">
+				<tr>
+					<td class="time_index">
+						新規路線
+					</td>
+				</tr>
+				<tr>
+					<td class="time">
+						<a href="rd.html?sel=STT_dia_16_up">大井町・押上方面</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="17" class="time_table">
+			<div class="station_name">梶が谷</div>
+			<table class="table_base">
+				<tr>
+					<td class="time_index">
+						新規路線
+					</td>
+				</tr>
+				<tr>
+					<td class="time">
+						<a href="rd.html?sel=STT_dia_17_up">押上・南栗橋方面</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="18" class="time_table">
+			<div class="station_name">宮崎台</div>
+			<table class="table_base">
+				<tr>
+					<td class="time_index">
+						新規路線
+					</td>
+				</tr>
+				<tr>
+					<td class="time">
+						<a href="rd.html?sel=STT_dia_18_up">押上・南栗橋方面</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="19" class="time_table">
+			<div class="station_name">宮前平</div>
+			<table class="table_base">
+				<tr>
+					<td class="time_index">
+						新規路線
+					</td>
+				</tr>
+				<tr>
+					<td class="time">
+						<a href="rd.html?sel=STT_dia_19_up">押上・南栗橋方面</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="20" class="time_table">
+			<div class="station_name">鷺沼</div>
+			<table class="table_base">
+				<tr>
+					<td class="time_index">
+						新規路線
+					</td>
+				</tr>
+				<tr>
+					<td class="time">
+						<a href="rd.html?sel=STT_dia_20_up">押上・久喜方面</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="21" class="time_table">
+			<div class="station_name">たまプラーザ</div>
+			<table class="table_base">
+				<tr>
+					<td class="time_index">
+						新規路線
+					</td>
+				</tr>
+				<tr>
+					<td class="time">
+						<a href="rd.html?sel=STT_dia_21_up">押上・久喜方面</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="22" class="time_table">
+			<div class="station_name">あざみ野</div>
+			<table class="table_base">
+				<tr>
+					<td class="time_index">
+						新規路線
+					</td>
+				</tr>
+				<tr>
+					<td class="time">
+						<a href="rd.html?sel=STT_dia_22_up">押上・久喜方面</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="23" class="time_table">
+			<div class="station_name">江田</div>
+			<table class="table_base">
+				<tr>
+					<td class="time_index">
+						新規路線
+					</td>
+				</tr>
+				<tr>
+					<td class="time">
+						<a href="rd.html?sel=STT_dia_23_up">押上・南栗橋方面</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="24" class="time_table">
+			<div class="station_name">市が尾</div>
+			<table class="table_base">
+				<tr>
+					<td class="time_index">
+						新規路線
+					</td>
+				</tr>
+				<tr>
+					<td class="time">
+						<a href="rd.html?sel=STT_dia_24_up">押上・南栗橋方面</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="25" class="time_table">
+			<div class="station_name">藤が丘</div>
+			<table class="table_base">
+				<tr>
+					<td class="time_index">
+						新規路線
+					</td>
+				</tr>
+				<tr>
+					<td class="time">
+						<a href="rd.html?sel=STT_dia_25_up">押上・南栗橋方面</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="26" class="time_table">
+			<div class="station_name">青葉台</div>
+			<table class="table_base">
+				<tr>
+					<td class="time_index">
+						新規路線
+					</td>
+				</tr>
+				<tr>
+					<td class="time">
+						<a href="rd.html?sel=STT_dia_26_up">押上・久喜方面</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="27" class="time_table">
+			<div class="station_name">田奈</div>
+			<table class="table_base">
+				<tr>
+					<td class="time_index">
+						新規路線
+					</td>
+				</tr>
+				<tr>
+					<td class="time">
+						<a href="rd.html?sel=STT_dia_27_up">押上・南栗橋方面</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="28" class="time_table">
+			<div class="station_name">長津田</div>
+			<table class="table_base">
+				<tr>
+					<td class="time_index">
+						新規路線
+					</td>
+				</tr>
+				<tr>
+					<td class="time">
+						<a href="rd.html?sel=STT_dia_28_up">押上・久喜方面</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+	<br>この時刻表はOuOrario V001.002を使用して生成しています。<a href="https://surugaexpress.web.fc2.com/X7_freeSoft/ouorario/ouorario.html">詳細</a></body>
+</html>
