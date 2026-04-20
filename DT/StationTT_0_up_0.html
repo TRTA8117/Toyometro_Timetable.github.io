@@ -1,0 +1,5503 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta http-equiv="content-type" charset="UTF-8">
+		<title>東急田園都市線 駅時刻表</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
+		<style>
+			.time_table
+			{  
+				font-family: "Noto Sans JP", sans-serif;
+  				font-size: 25px;
+				display:none;
+			}
+
+			.TT_index
+			{
+				position:fixed;
+				top: 70px;
+				background-color:#ffffff; 
+				width: 100%;
+				height: 144px; 
+				z-index:999;
+			}
+
+			.station_name
+			{  
+				font-size: 45px; 
+				padding: 0px 7px;
+				height: 68px;
+				font-weight: bold;
+			}
+			.line_name
+			{  
+				padding: 0px 7px;
+				height: 38px;
+			}
+
+			.direc
+			{  
+				height: 38px;
+			}
+
+			.dia_sel
+			{
+				height: 70px;
+				width: 100%;
+				text-align: center;
+				border-collapse: collapse;
+				border-bottom: 5px solid #62AF75;
+				background-color:#ffffff; 
+			}
+
+			.dia_sel_on
+			{
+				width: 150px;
+				border-top: 1px solid #b4b4b4;
+				border-left: 1px solid #b4b4b4;
+				border-right: 1px solid #b4b4b4;
+				background-color:#62AF75; 
+				color: #ffffff;
+			}
+
+			.dia_sel_off
+			{
+				width: 150px;
+				border-top: 1px solid #b4b4b4;
+				border-left: 1px solid #b4b4b4;
+				border-right: 1px solid #b4b4b4;
+			}
+
+			.TT_index_space
+			{
+				height: 206px;
+			}
+
+			.table_base
+			{
+				width: 100%; 
+				border-collapse: collapse;
+			}
+
+			.time_index
+			{  
+  				font-size: 20px;
+				width: 600px;
+				height: 50px;
+				font-weight: bold;
+				color: #525252;
+				background-color: #eeeeee;
+			}
+			.time
+			{  
+				font-size: 30px;
+				width: 120px;
+				font-weight: bold;
+				border-bottom: 2px solid #b4b4b4;
+				cursor: pointer;
+			}
+			.train_type
+			{  
+				font-weight: bold;
+				cursor: pointer;
+			}
+			.cars
+			{  
+				width: 0px;
+				color: #707070;
+				cursor: pointer;
+			}
+			.track
+			{  
+				color: #707070;
+				cursor: pointer;
+			}
+			.track_num
+			{  
+				color: #ffffff;
+				position: relative;
+				position: relative;
+				top: -4px;
+				left: 7px;
+			}
+
+			.track_num_back
+			{ 
+				background-color: #707070;
+				width: 30px;
+				height: 30px;
+				position: relative;
+			}
+
+			.track_num_back::after
+			{ 
+				content: "番線発";
+				display: block; 
+				width: 100px;
+				position: absolute;
+				top: -4px;
+   				left: 33px;	
+			}
+
+			.track_num_back_2
+			{ 
+				background-color: #707070;
+				width: 60px;
+				height: 30px;
+				position: relative;
+			}
+
+			.track_num_back_2::after
+			{ 
+				content: "番線発";
+				display: block; 
+				width: 100px;
+				position: absolute;
+				top: -1px;
+   				left: 63px;	
+			}
+
+			.track_num_back_3
+			{ 
+				background-color: #707070;
+				width: 90px;
+				height: 30px;
+				position: relative;
+			}
+
+			.track_num_back_3.cars
+			{ 
+				content: "番線発";
+				display: block; 
+				width: 100px;
+				position: absolute;
+				top: -1px;
+   				left: 93px;	
+			}
+
+			.train_link
+			{  
+				text-align: right;
+			}
+			.dest
+			{  
+				border-bottom: 2px solid #b4b4b4;
+				cursor: pointer;
+			}
+
+			.sihatu
+			{
+				background-color: #0BC3B0;
+				width: 90px;
+				height: 10px;
+				font-size: 20px;
+				color: #ffffff;
+			}
+
+			.TT_menu
+			{
+				position:fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				font-size: 30px;
+				height: 70px;
+				z-index:999;
+				background-color:#ffffff; 
+			}
+
+			.TT_menu_space
+			{
+				height: 70px;
+			}
+
+			.custom-link 
+			{
+            	color: #000000;
+            	text-decoration: none;
+        	}
+		</style>
+		<link rel="stylesheet" type="text/css" href="common.css">
+		<script>
+			function ShowTable()
+			{
+				// URLのパラメータを取得
+				const urlParams = new URLSearchParams(window.location.search);
+				const select = urlParams.get("sel");
+
+				// 表示
+				document.getElementById(select).style.display="block";
+			}
+		</script>
+	</head>
+	<body onload='ShowTable()'>
+		<div class="TT_menu">
+			<a href="TTIndex.html">駅一覧に戻る</a>
+		</div>
+		<div class="TT_menu_space"></div>
+		<div id="8" class="time_table">
+			<div class="TT_index">
+				<div class="station_name" style="border-left: 7px solid #858585;">池尻大橋駅</div>
+				<div  class="line_name" style="border-left: 7px solid #858585;">東急田園都市線</div>
+				<div  class="direc">【渋谷方面】</div>
+				<table  class="dia_sel">
+					<tr>
+						<td class="dia_sel_on">
+							新規ダイヤ
+						</td>
+						<td>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="TT_index_space";></div>
+			<table class="table_base">
+				<tr>
+					<td colspan="4" class="time_index">
+						13時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td rowspan="3" class="time">
+						13:28
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_1">準急</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td rowspan="3" class="time">
+						13:31
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td rowspan="3" class="time">
+						13:37
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td rowspan="3" class="time">
+						13:37
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+			</table>
+			</div>
+		<div id="9" class="time_table">
+			<div class="TT_index">
+				<div class="station_name" style="border-left: 7px solid #858585;">三軒茶屋駅</div>
+				<div  class="line_name" style="border-left: 7px solid #858585;">東急田園都市線</div>
+				<div  class="direc">【渋谷方面】</div>
+				<table  class="dia_sel">
+					<tr>
+						<td class="dia_sel_on">
+							新規ダイヤ
+						</td>
+						<td>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="TT_index_space";></div>
+			<table class="table_base">
+				<tr>
+					<td colspan="4" class="time_index">
+						13時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_21'">
+					<td rowspan="3" class="time">
+						13:21
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_2">急行</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_21'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_21'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td rowspan="3" class="time">
+						13:27
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_1">準急</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td rowspan="3" class="time">
+						13:30
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td rowspan="3" class="time">
+						13:36
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td rowspan="3" class="time">
+						13:36
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+			</table>
+			</div>
+		<div id="10" class="time_table">
+			<div class="TT_index">
+				<div class="station_name" style="border-left: 7px solid #858585;">駒沢大学駅</div>
+				<div  class="line_name" style="border-left: 7px solid #858585;">東急田園都市線</div>
+				<div  class="direc">【渋谷方面】</div>
+				<table  class="dia_sel">
+					<tr>
+						<td class="dia_sel_on">
+							新規ダイヤ
+						</td>
+						<td>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="TT_index_space";></div>
+			<table class="table_base">
+				<tr>
+					<td colspan="4" class="time_index">
+						13時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td rowspan="3" class="time">
+						13:26
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_1">準急</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td rowspan="3" class="time">
+						13:29
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td rowspan="3" class="time">
+						13:35
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td rowspan="3" class="time">
+						13:35
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+			</table>
+			</div>
+		<div id="11" class="time_table">
+			<div class="TT_index">
+				<div class="station_name" style="border-left: 7px solid #858585;">桜新町駅</div>
+				<div  class="line_name" style="border-left: 7px solid #858585;">東急田園都市線</div>
+				<div  class="direc">【渋谷方面】</div>
+				<table  class="dia_sel">
+					<tr>
+						<td class="dia_sel_on">
+							新規ダイヤ
+						</td>
+						<td>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="TT_index_space";></div>
+			<table class="table_base">
+				<tr>
+					<td colspan="4" class="time_index">
+						13時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td rowspan="3" class="time">
+						13:24
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_1">準急</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back_2"><div class="track_num">12</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td rowspan="3" class="time">
+						13:27
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back_2"><div class="track_num">12</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td rowspan="3" class="time">
+						13:33
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back_2"><div class="track_num">12</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td rowspan="3" class="time">
+						13:33
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back_2"><div class="track_num">12</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+			</table>
+			</div>
+		<div id="12" class="time_table">
+			<div class="TT_index">
+				<div class="station_name" style="border-left: 7px solid #858585;">用賀駅</div>
+				<div  class="line_name" style="border-left: 7px solid #858585;">東急田園都市線</div>
+				<div  class="direc">【渋谷方面】</div>
+				<table  class="dia_sel">
+					<tr>
+						<td class="dia_sel_on">
+							新規ダイヤ
+						</td>
+						<td>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="TT_index_space";></div>
+			<table class="table_base">
+				<tr>
+					<td colspan="4" class="time_index">
+						13時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td rowspan="3" class="time">
+						13:23
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_1">準急</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td rowspan="3" class="time">
+						13:26
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td rowspan="3" class="time">
+						13:32
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td rowspan="3" class="time">
+						13:32
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+			</table>
+			</div>
+		<div id="13" class="time_table">
+			<div class="TT_index">
+				<div class="station_name" style="border-left: 7px solid #858585;">二子玉川駅</div>
+				<div  class="line_name" style="border-left: 7px solid #858585;">東急田園都市線</div>
+				<div  class="direc">【渋谷方面】</div>
+				<table  class="dia_sel">
+					<tr>
+						<td class="dia_sel_on">
+							新規ダイヤ
+						</td>
+						<td>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="TT_index_space";></div>
+			<table class="table_base">
+				<tr>
+					<td colspan="4" class="time_index">
+						13時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_21'">
+					<td rowspan="3" class="time">
+						13:18
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_2">急行</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_21'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_21'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td rowspan="3" class="time">
+						13:21
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_1">準急</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td rowspan="3" class="time">
+						13:24
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td rowspan="3" class="time">
+						13:30
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td rowspan="3" class="time">
+						13:30
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+			</table>
+			</div>
+		<div id="14" class="time_table">
+			<div class="TT_index">
+				<div class="station_name" style="border-left: 7px solid #858585;">二子新地駅</div>
+				<div  class="line_name" style="border-left: 7px solid #858585;">東急田園都市線</div>
+				<div  class="direc">【渋谷方面】</div>
+				<table  class="dia_sel">
+					<tr>
+						<td class="dia_sel_on">
+							新規ダイヤ
+						</td>
+						<td>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="TT_index_space";></div>
+			<table class="table_base">
+				<tr>
+					<td colspan="4" class="time_index">
+						13時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td rowspan="3" class="time">
+						13:23
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td rowspan="3" class="time">
+						13:29
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td rowspan="3" class="time">
+						13:29
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+			</table>
+			</div>
+		<div id="15" class="time_table">
+			<div class="TT_index">
+				<div class="station_name" style="border-left: 7px solid #858585;">高津駅</div>
+				<div  class="line_name" style="border-left: 7px solid #858585;">東急田園都市線</div>
+				<div  class="direc">【渋谷方面】</div>
+				<table  class="dia_sel">
+					<tr>
+						<td class="dia_sel_on">
+							新規ダイヤ
+						</td>
+						<td>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="TT_index_space";></div>
+			<table class="table_base">
+				<tr>
+					<td colspan="4" class="time_index">
+						13時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td rowspan="3" class="time">
+						13:22
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td rowspan="3" class="time">
+						13:28
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td rowspan="3" class="time">
+						13:28
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+			</table>
+			</div>
+		<div id="16" class="time_table">
+			<div class="TT_index">
+				<div class="station_name" style="border-left: 7px solid #858585;">溝の口駅</div>
+				<div  class="line_name" style="border-left: 7px solid #858585;">東急田園都市線</div>
+				<div  class="direc">【渋谷方面】</div>
+				<table  class="dia_sel">
+					<tr>
+						<td class="dia_sel_on">
+							新規ダイヤ
+						</td>
+						<td>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="TT_index_space";></div>
+			<table class="table_base">
+				<tr>
+					<td colspan="4" class="time_index">
+						13時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_21'">
+					<td rowspan="3" class="time">
+						13:16
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_2">急行</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_21'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_21'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td rowspan="3" class="time">
+						13:19
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_1">準急</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td rowspan="3" class="time">
+						13:21
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td rowspan="3" class="time">
+						13:27
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td rowspan="3" class="time">
+						13:27
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+			</table>
+			</div>
+		<div id="17" class="time_table">
+			<div class="TT_index">
+				<div class="station_name" style="border-left: 7px solid #858585;">梶が谷駅</div>
+				<div  class="line_name" style="border-left: 7px solid #858585;">東急田園都市線</div>
+				<div  class="direc">【渋谷方面】</div>
+				<table  class="dia_sel">
+					<tr>
+						<td class="dia_sel_on">
+							新規ダイヤ
+						</td>
+						<td>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="TT_index_space";></div>
+			<table class="table_base">
+				<tr>
+					<td colspan="4" class="time_index">
+						13時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td rowspan="3" class="time">
+						13:20
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">3</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td rowspan="3" class="time">
+						13:26
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">3</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td rowspan="3" class="time">
+						13:26
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">3</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+			</table>
+			</div>
+		<div id="18" class="time_table">
+			<div class="TT_index">
+				<div class="station_name" style="border-left: 7px solid #858585;">宮崎台駅</div>
+				<div  class="line_name" style="border-left: 7px solid #858585;">東急田園都市線</div>
+				<div  class="direc">【渋谷方面】</div>
+				<table  class="dia_sel">
+					<tr>
+						<td class="dia_sel_on">
+							新規ダイヤ
+						</td>
+						<td>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="TT_index_space";></div>
+			<table class="table_base">
+				<tr>
+					<td colspan="4" class="time_index">
+						13時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td rowspan="3" class="time">
+						13:18
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td rowspan="3" class="time">
+						13:24
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td rowspan="3" class="time">
+						13:24
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+			</table>
+			</div>
+		<div id="19" class="time_table">
+			<div class="TT_index">
+				<div class="station_name" style="border-left: 7px solid #858585;">宮前平駅</div>
+				<div  class="line_name" style="border-left: 7px solid #858585;">東急田園都市線</div>
+				<div  class="direc">【渋谷方面】</div>
+				<table  class="dia_sel">
+					<tr>
+						<td class="dia_sel_on">
+							新規ダイヤ
+						</td>
+						<td>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="TT_index_space";></div>
+			<table class="table_base">
+				<tr>
+					<td colspan="4" class="time_index">
+						13時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td rowspan="3" class="time">
+						13:17
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td rowspan="3" class="time">
+						13:23
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td rowspan="3" class="time">
+						13:23
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+			</table>
+			</div>
+		<div id="20" class="time_table">
+			<div class="TT_index">
+				<div class="station_name" style="border-left: 7px solid #858585;">鷺沼駅</div>
+				<div  class="line_name" style="border-left: 7px solid #858585;">東急田園都市線</div>
+				<div  class="direc">【渋谷方面】</div>
+				<table  class="dia_sel">
+					<tr>
+						<td class="dia_sel_on">
+							新規ダイヤ
+						</td>
+						<td>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="TT_index_space";></div>
+			<table class="table_base">
+				<tr>
+					<td colspan="4" class="time_index">
+						13時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_21'">
+					<td rowspan="3" class="time">
+						13:14
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_2">急行</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_21'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">3</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_21'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td rowspan="3" class="time">
+						13:16
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">3</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td rowspan="3" class="time">
+						13:18
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_1">準急</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">3</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td rowspan="3" class="time">
+						13:22
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">3</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td rowspan="3" class="time">
+						13:22
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">3</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+			</table>
+			</div>
+		<div id="21" class="time_table">
+			<div class="TT_index">
+				<div class="station_name" style="border-left: 7px solid #858585;">たまプラーザ駅</div>
+				<div  class="line_name" style="border-left: 7px solid #858585;">東急田園都市線</div>
+				<div  class="direc">【鷺沼・渋谷方面】</div>
+				<table  class="dia_sel">
+					<tr>
+						<td class="dia_sel_on">
+							新規ダイヤ
+						</td>
+						<td>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="TT_index_space";></div>
+			<table class="table_base">
+				<tr>
+					<td colspan="4" class="time_index">
+						13時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_21'">
+					<td rowspan="3" class="time">
+						13:13
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_2">急行</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_21'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_21'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td rowspan="3" class="time">
+						13:14
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td rowspan="3" class="time">
+						13:16
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_1">準急</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td rowspan="3" class="time">
+						13:20
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td rowspan="3" class="time">
+						13:20
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4" class="time_index">
+						18時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_1'">
+					<td rowspan="3" class="time">
+						18:10
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_1">準急</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_1'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_1'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_0'">
+					<td rowspan="3" class="time">
+						18:14
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_0'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_0'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_2'">
+					<td rowspan="3" class="time">
+						18:17
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_2'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_2'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_4'">
+					<td rowspan="3" class="time">
+						18:20
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_2">急行</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_4'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_4'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_3'">
+					<td rowspan="3" class="time">
+						18:21
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_3'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_3'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_5'">
+					<td rowspan="3" class="time">
+						18:26
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_5'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_5'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_6'">
+					<td rowspan="3" class="time">
+						18:29
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_6'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_6'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_8'">
+					<td rowspan="3" class="time">
+						18:30
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_1">準急</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_8'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_8'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_7'">
+					<td rowspan="3" class="time">
+						18:34
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_7'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_7'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_9'">
+					<td rowspan="3" class="time">
+						18:34
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_9'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_9'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_10'">
+					<td rowspan="3" class="time">
+						18:38
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_10'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_10'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_11'">
+					<td rowspan="3" class="time">
+						18:42
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_11'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_11'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_12'">
+					<td rowspan="3" class="time">
+						18:46
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_12'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_12'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_13'">
+					<td rowspan="3" class="time">
+						18:50
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_13'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_13'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_14'">
+					<td rowspan="3" class="time">
+						18:54
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_14'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_14'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_15'">
+					<td rowspan="3" class="time">
+						18:58
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_15'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_15'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4" class="time_index">
+						19時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_16'">
+					<td rowspan="3" class="time">
+						19:02
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_16'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_16'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_17'">
+					<td rowspan="3" class="time">
+						19:06
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_17'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_17'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_18'">
+					<td rowspan="3" class="time">
+						19:10
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_18'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_18'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+			</table>
+			</div>
+		<div id="22" class="time_table">
+			<div class="TT_index">
+				<div class="station_name" style="border-left: 7px solid #858585;">あざみ野駅</div>
+				<div  class="line_name" style="border-left: 7px solid #858585;">東急田園都市線</div>
+				<div  class="direc">【鷺沼・渋谷方面】</div>
+				<table  class="dia_sel">
+					<tr>
+						<td class="dia_sel_on">
+							新規ダイヤ
+						</td>
+						<td>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="TT_index_space";></div>
+			<table class="table_base">
+				<tr>
+					<td colspan="4" class="time_index">
+						13時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_21'">
+					<td rowspan="3" class="time">
+						13:11
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_2">急行</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_21'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_21'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td rowspan="3" class="time">
+						13:13
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td rowspan="3" class="time">
+						13:15
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_1">準急</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td rowspan="3" class="time">
+						13:19
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td rowspan="3" class="time">
+						13:19
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4" class="time_index">
+						18時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_1'">
+					<td rowspan="3" class="time">
+						18:09
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_1">準急</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_1'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_1'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_0'">
+					<td rowspan="3" class="time">
+						18:13
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_0'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_0'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_2'">
+					<td rowspan="3" class="time">
+						18:16
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_2'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_2'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_4'">
+					<td rowspan="3" class="time">
+						18:18
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_2">急行</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_4'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_4'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_3'">
+					<td rowspan="3" class="time">
+						18:20
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_3'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_3'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_5'">
+					<td rowspan="3" class="time">
+						18:25
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_5'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_5'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_6'">
+					<td rowspan="3" class="time">
+						18:28
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_6'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_6'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_8'">
+					<td rowspan="3" class="time">
+						18:29
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_1">準急</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_8'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_8'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_7'">
+					<td rowspan="3" class="time">
+						18:33
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_7'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_7'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_9'">
+					<td rowspan="3" class="time">
+						18:33
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_9'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_9'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_10'">
+					<td rowspan="3" class="time">
+						18:37
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_10'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_10'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_11'">
+					<td rowspan="3" class="time">
+						18:41
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_11'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_11'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_12'">
+					<td rowspan="3" class="time">
+						18:45
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_12'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_12'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_13'">
+					<td rowspan="3" class="time">
+						18:49
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_13'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_13'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_14'">
+					<td rowspan="3" class="time">
+						18:53
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_14'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_14'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_15'">
+					<td rowspan="3" class="time">
+						18:57
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_15'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_15'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4" class="time_index">
+						19時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_16'">
+					<td rowspan="3" class="time">
+						19:01
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_16'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_16'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_17'">
+					<td rowspan="3" class="time">
+						19:05
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_17'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_17'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_18'">
+					<td rowspan="3" class="time">
+						19:09
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_18'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_18'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+			</table>
+			</div>
+		<div id="23" class="time_table">
+			<div class="TT_index">
+				<div class="station_name" style="border-left: 7px solid #858585;">江田駅</div>
+				<div  class="line_name" style="border-left: 7px solid #858585;">東急田園都市線</div>
+				<div  class="direc">【鷺沼・渋谷方面】</div>
+				<table  class="dia_sel">
+					<tr>
+						<td class="dia_sel_on">
+							新規ダイヤ
+						</td>
+						<td>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="TT_index_space";></div>
+			<table class="table_base">
+				<tr>
+					<td colspan="4" class="time_index">
+						13時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td rowspan="3" class="time">
+						13:11
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td rowspan="3" class="time">
+						13:17
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td rowspan="3" class="time">
+						13:17
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4" class="time_index">
+						18時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_0'">
+					<td rowspan="3" class="time">
+						18:11
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_0'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_0'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_2'">
+					<td rowspan="3" class="time">
+						18:14
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_2'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_2'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_3'">
+					<td rowspan="3" class="time">
+						18:18
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_3'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_3'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_5'">
+					<td rowspan="3" class="time">
+						18:23
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_5'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_5'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_6'">
+					<td rowspan="3" class="time">
+						18:26
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_6'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_6'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_7'">
+					<td rowspan="3" class="time">
+						18:31
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_7'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_7'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_9'">
+					<td rowspan="3" class="time">
+						18:31
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_9'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_9'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_10'">
+					<td rowspan="3" class="time">
+						18:35
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_10'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_10'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_11'">
+					<td rowspan="3" class="time">
+						18:39
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_11'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_11'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_12'">
+					<td rowspan="3" class="time">
+						18:43
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_12'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_12'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_13'">
+					<td rowspan="3" class="time">
+						18:47
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_13'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_13'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_14'">
+					<td rowspan="3" class="time">
+						18:51
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_14'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_14'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_15'">
+					<td rowspan="3" class="time">
+						18:55
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_15'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_15'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_16'">
+					<td rowspan="3" class="time">
+						18:59
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_16'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_16'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4" class="time_index">
+						19時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_17'">
+					<td rowspan="3" class="time">
+						19:03
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_17'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_17'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_18'">
+					<td rowspan="3" class="time">
+						19:07
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_18'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">4</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_18'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+			</table>
+			</div>
+		<div id="24" class="time_table">
+			<div class="TT_index">
+				<div class="station_name" style="border-left: 7px solid #858585;">市が尾駅</div>
+				<div  class="line_name" style="border-left: 7px solid #858585;">東急田園都市線</div>
+				<div  class="direc">【鷺沼・渋谷方面】</div>
+				<table  class="dia_sel">
+					<tr>
+						<td class="dia_sel_on">
+							新規ダイヤ
+						</td>
+						<td>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="TT_index_space";></div>
+			<table class="table_base">
+				<tr>
+					<td colspan="4" class="time_index">
+						13時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td rowspan="3" class="time">
+						13:09
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td rowspan="3" class="time">
+						13:15
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td rowspan="3" class="time">
+						13:15
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4" class="time_index">
+						18時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_0'">
+					<td rowspan="3" class="time">
+						18:09
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_0'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_0'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_2'">
+					<td rowspan="3" class="time">
+						18:12
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_2'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_2'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_3'">
+					<td rowspan="3" class="time">
+						18:16
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_3'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_3'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_5'">
+					<td rowspan="3" class="time">
+						18:21
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_5'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_5'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_6'">
+					<td rowspan="3" class="time">
+						18:24
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_6'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_6'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_7'">
+					<td rowspan="3" class="time">
+						18:29
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_7'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_7'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_9'">
+					<td rowspan="3" class="time">
+						18:29
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_9'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_9'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_10'">
+					<td rowspan="3" class="time">
+						18:33
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_10'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_10'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_11'">
+					<td rowspan="3" class="time">
+						18:37
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_11'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_11'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_12'">
+					<td rowspan="3" class="time">
+						18:41
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_12'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_12'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_13'">
+					<td rowspan="3" class="time">
+						18:45
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_13'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_13'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_14'">
+					<td rowspan="3" class="time">
+						18:49
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_14'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_14'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_15'">
+					<td rowspan="3" class="time">
+						18:53
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_15'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_15'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_16'">
+					<td rowspan="3" class="time">
+						18:57
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_16'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_16'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4" class="time_index">
+						19時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_17'">
+					<td rowspan="3" class="time">
+						19:01
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_17'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_17'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_18'">
+					<td rowspan="3" class="time">
+						19:05
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_18'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_18'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+			</table>
+			</div>
+		<div id="25" class="time_table">
+			<div class="TT_index">
+				<div class="station_name" style="border-left: 7px solid #858585;">藤が丘駅</div>
+				<div  class="line_name" style="border-left: 7px solid #858585;">東急田園都市線</div>
+				<div  class="direc">【鷺沼・渋谷方面】</div>
+				<table  class="dia_sel">
+					<tr>
+						<td class="dia_sel_on">
+							新規ダイヤ
+						</td>
+						<td>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="TT_index_space";></div>
+			<table class="table_base">
+				<tr>
+					<td colspan="4" class="time_index">
+						13時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td rowspan="3" class="time">
+						13:07
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">3</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td rowspan="3" class="time">
+						13:13
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">3</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td rowspan="3" class="time">
+						13:13
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">3</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4" class="time_index">
+						18時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_0'">
+					<td rowspan="3" class="time">
+						18:07
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_0'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">3</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_0'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_2'">
+					<td rowspan="3" class="time">
+						18:10
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_2'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">3</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_2'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_3'">
+					<td rowspan="3" class="time">
+						18:14
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_3'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">3</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_3'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_5'">
+					<td rowspan="3" class="time">
+						18:19
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_5'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">3</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_5'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_6'">
+					<td rowspan="3" class="time">
+						18:22
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_6'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">3</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_6'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_7'">
+					<td rowspan="3" class="time">
+						18:27
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_7'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">3</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_7'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_9'">
+					<td rowspan="3" class="time">
+						18:27
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_9'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">3</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_9'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_10'">
+					<td rowspan="3" class="time">
+						18:31
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_10'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">3</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_10'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_11'">
+					<td rowspan="3" class="time">
+						18:35
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_11'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">3</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_11'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_12'">
+					<td rowspan="3" class="time">
+						18:39
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_12'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">3</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_12'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_13'">
+					<td rowspan="3" class="time">
+						18:43
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_13'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">3</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_13'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_14'">
+					<td rowspan="3" class="time">
+						18:47
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_14'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">3</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_14'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_15'">
+					<td rowspan="3" class="time">
+						18:51
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_15'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">3</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_15'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_16'">
+					<td rowspan="3" class="time">
+						18:55
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_16'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">3</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_16'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_17'">
+					<td rowspan="3" class="time">
+						18:59
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_17'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">3</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_17'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4" class="time_index">
+						19時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_18'">
+					<td rowspan="3" class="time">
+						19:03
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_18'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">3</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_18'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+			</table>
+			</div>
+		<div id="26" class="time_table">
+			<div class="TT_index">
+				<div class="station_name" style="border-left: 7px solid #858585;">青葉台駅</div>
+				<div  class="line_name" style="border-left: 7px solid #858585;">東急田園都市線</div>
+				<div  class="direc">【鷺沼・渋谷方面】</div>
+				<table  class="dia_sel">
+					<tr>
+						<td class="dia_sel_on">
+							新規ダイヤ
+						</td>
+						<td>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="TT_index_space";></div>
+			<table class="table_base">
+				<tr>
+					<td colspan="4" class="time_index">
+						13時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td rowspan="3" class="time">
+						13:05
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_21'">
+					<td rowspan="3" class="time">
+						13:09
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_2">急行</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_21'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_21'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td rowspan="3" class="time">
+						13:11
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td rowspan="3" class="time">
+						13:11
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td rowspan="3" class="time">
+						13:12
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_1">準急</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4" class="time_index">
+						18時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_0'">
+					<td rowspan="3" class="time">
+						18:05
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_0'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_0'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_1'">
+					<td rowspan="3" class="time">
+						18:06
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_1">準急</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_1'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_1'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_2'">
+					<td rowspan="3" class="time">
+						18:08
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_2'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_2'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_3'">
+					<td rowspan="3" class="time">
+						18:12
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_3'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_3'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_4'">
+					<td rowspan="3" class="time">
+						18:16
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_2">急行</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_4'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_4'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_5'">
+					<td rowspan="3" class="time">
+						18:17
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_5'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_5'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_6'">
+					<td rowspan="3" class="time">
+						18:20
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_6'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_6'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_7'">
+					<td rowspan="3" class="time">
+						18:25
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_7'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_7'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_9'">
+					<td rowspan="3" class="time">
+						18:25
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_9'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_9'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_8'">
+					<td rowspan="3" class="time">
+						18:26
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_1">準急</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_8'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_8'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_10'">
+					<td rowspan="3" class="time">
+						18:29
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_10'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_10'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_11'">
+					<td rowspan="3" class="time">
+						18:33
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_11'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_11'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_12'">
+					<td rowspan="3" class="time">
+						18:37
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_12'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_12'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_13'">
+					<td rowspan="3" class="time">
+						18:41
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_13'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_13'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_14'">
+					<td rowspan="3" class="time">
+						18:45
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_14'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_14'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_15'">
+					<td rowspan="3" class="time">
+						18:49
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_15'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_15'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_16'">
+					<td rowspan="3" class="time">
+						18:53
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_16'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_16'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_17'">
+					<td rowspan="3" class="time">
+						18:57
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_17'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_17'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4" class="time_index">
+						19時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_18'">
+					<td rowspan="3" class="time">
+						19:01
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_18'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_18'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+			</table>
+			</div>
+		<div id="27" class="time_table">
+			<div class="TT_index">
+				<div class="station_name" style="border-left: 7px solid #858585;">田奈駅</div>
+				<div  class="line_name" style="border-left: 7px solid #858585;">東急田園都市線</div>
+				<div  class="direc">【鷺沼・渋谷方面】</div>
+				<table  class="dia_sel">
+					<tr>
+						<td class="dia_sel_on">
+							新規ダイヤ
+						</td>
+						<td>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="TT_index_space";></div>
+			<table class="table_base">
+				<tr>
+					<td colspan="4" class="time_index">
+						13時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td rowspan="3" class="time">
+						13:04
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td rowspan="3" class="time">
+						13:10
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td rowspan="3" class="time">
+						13:10
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4" class="time_index">
+						18時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_0'">
+					<td rowspan="3" class="time">
+						18:04
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_0'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_0'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_2'">
+					<td rowspan="3" class="time">
+						18:07
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_2'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_2'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_3'">
+					<td rowspan="3" class="time">
+						18:11
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_3'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_3'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_5'">
+					<td rowspan="3" class="time">
+						18:16
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_5'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_5'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_6'">
+					<td rowspan="3" class="time">
+						18:19
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_6'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_6'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_7'">
+					<td rowspan="3" class="time">
+						18:24
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_7'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_7'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_9'">
+					<td rowspan="3" class="time">
+						18:24
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_9'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_9'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_10'">
+					<td rowspan="3" class="time">
+						18:28
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_10'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_10'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_11'">
+					<td rowspan="3" class="time">
+						18:32
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_11'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_11'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_12'">
+					<td rowspan="3" class="time">
+						18:36
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_12'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_12'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_13'">
+					<td rowspan="3" class="time">
+						18:40
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_13'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_13'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_14'">
+					<td rowspan="3" class="time">
+						18:44
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_14'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_14'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_15'">
+					<td rowspan="3" class="time">
+						18:48
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_15'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_15'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_16'">
+					<td rowspan="3" class="time">
+						18:52
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_16'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_16'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_17'">
+					<td rowspan="3" class="time">
+						18:56
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_17'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_17'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4" class="time_index">
+						19時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_18'">
+					<td rowspan="3" class="time">
+						19:00
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_18'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">2</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_18'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+			</table>
+			</div>
+		<div id="28" class="time_table">
+			<div class="TT_index">
+				<div class="station_name" style="border-left: 7px solid #858585;">長津田駅</div>
+				<div  class="line_name" style="border-left: 7px solid #858585;">東急田園都市線</div>
+				<div  class="direc">【鷺沼・渋谷方面】</div>
+				<table  class="dia_sel">
+					<tr>
+						<td class="dia_sel_on">
+							新規ダイヤ
+						</td>
+						<td>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="TT_index_space";></div>
+			<table class="table_base">
+				<tr>
+					<td colspan="4" class="time_index">
+						13時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td rowspan="3" class="time">
+						13:03
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">5</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_20'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_21'">
+					<td rowspan="3" class="time">
+						13:07
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_2">急行</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_21'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">5</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_21'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td rowspan="3" class="time">
+						13:09
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">5</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_19'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td rowspan="3" class="time">
+						13:09
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">5</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_22'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td rowspan="3" class="time">
+						13:10
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_1">準急</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">5</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_23'">
+					<td colspan="3" class="dest">
+						渋谷行
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4" class="time_index">
+						18時
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_0'">
+					<td rowspan="3" class="time">
+						18:03
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_0'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">5</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_0'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_1'">
+					<td rowspan="3" class="time">
+						18:04
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_1">準急</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_1'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">6</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_1'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_2'">
+					<td rowspan="3" class="time">
+						18:06
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_2'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">5</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_2'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_3'">
+					<td rowspan="3" class="time">
+						18:10
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_3'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">5</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_3'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_4'">
+					<td rowspan="3" class="time">
+						18:14
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_2">急行</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_4'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">6</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_4'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_5'">
+					<td rowspan="3" class="time">
+						18:15
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_5'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">5</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_5'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_6'">
+					<td rowspan="3" class="time">
+						18:18
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_6'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">5</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_6'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_7'">
+					<td rowspan="3" class="time">
+						18:23
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_7'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">5</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_7'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_9'">
+					<td rowspan="3" class="time">
+						18:23
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_9'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">5</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_9'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_8'">
+					<td rowspan="3" class="time">
+						18:24
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_1">準急</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_8'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">6</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_8'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_10'">
+					<td rowspan="3" class="time">
+						18:27
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_10'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">5</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_10'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_11'">
+					<td rowspan="3" class="time">
+						18:31
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_11'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">5</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_11'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_12'">
+					<td rowspan="3" class="time">
+						18:35
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_12'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">5</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_12'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_13'">
+					<td rowspan="3" class="time">
+						18:39
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_13'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">5</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_13'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_14'">
+					<td rowspan="3" class="time">
+						18:43
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_14'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">5</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_14'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_15'">
+					<td rowspan="3" class="time">
+						18:47
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_15'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">5</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_15'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_16'">
+					<td rowspan="3" class="time">
+						18:51
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_16'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">5</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_16'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_17'">
+					<td rowspan="3" class="time">
+						18:55
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_17'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">5</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_17'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_18'">
+					<td rowspan="3" class="time">
+						18:59
+					</td>
+					<td colspan="3" class="train_type">
+						<span class="type_0">各駅停車</span>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_18'">
+					<td class="cars">
+						
+					</td>
+					<td class="track">
+						<div class="track_num_back"><div class="track_num">5</div></div>
+					</td>
+				</tr>
+				<tr onclick="location.href = 'rd.html?sel=TTT_0_18'">
+					<td colspan="3" class="dest">
+						鷺沼行
+					</td>
+				</tr>
+			</table>
+			</div>
+	<br>この時刻表はOuOrario V001.002を使用して生成しています。<a href="https://surugaexpress.web.fc2.com/X7_freeSoft/ouorario/ouorario.html">詳細</a></body>
+</html>
